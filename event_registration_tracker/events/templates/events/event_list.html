@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcoming Events</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9fcff;
+        }
+
+        h1 {
+            color: #000000;
+            text-align: center;
+            font-size: 3rem;
+            text-decoration: underline;
+            padding-bottom: 20px;
+            text-shadow: 2px 2px 2px #0066ff;
+        }
+
+        h2 {
+            color: #000000;
+            font-size: 2rem;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: flex-start;
+        }
+
+        li {
+            background: #c5e5ee;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex: 0 1 calc(30% - 20px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            transition: box-shadow 0.3s ease;
+        }
+
+        li:hover {
+            box-shadow: 4px 4px 8px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            color: #0066ff;
+            text-decoration: none;
+            font-size: 1.3rem;
+        }
+
+        @media (max-width: 600px) {
+            li {
+                flex: 0 1 calc(100% - 20px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Upcoming Events</h1>
+    <ul>
+        {% for event in events %}
+        <li>
+            <h2>{{ event.title }}</h2>
+            {% if event.image %}
+            <img src="{{ event.image.url }}" alt="Image for {{ event.title }}">
+            {% endif %}
+            <p>{{ event.description }}</p>
+            <p>Date: {{ event.date|date:"F j, Y, g:i a" }}</p>
+            <a href="{% url 'register_for_event' event.id %}">Register</a>
+            {% if event.status == 'completed' %}
+            <a href="{% url 'event_feedback' event.id %}">Give Feedback</a>
+            {% endif %}
+        </li>
+        {% empty %}
+        <li>No upcoming events available.</li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
